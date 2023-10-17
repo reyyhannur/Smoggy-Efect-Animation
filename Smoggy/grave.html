@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="grave.css" />
+  </head>
+  <body>
+    <div class="smoke">
+      <div class="text">
+        <img
+          src="halloween-tombstone-with-bones-and-skulls-svgrepo-com.svg"
+          alt="Teddy Bear"
+          style="filter: url(#neon-effect)"
+        />
+      </div>
+    </div>
+    <svg width="0">
+      <filter id="filter">
+        <feTurbulence
+          id="turbulence"
+          type="fractalNoise"
+          baseFrequency=".01"
+          numOctaves="20"
+        />
+        <feDisplacementMap in="SourceGraphic" scale="20" />
+      </filter>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+      <defs>
+        <filter id="neon-effect" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+          <feFlood flood-color="#ea1104" result="glowColor" />
+          <feComposite in="glowColor" in2="blur" operator="in" result="glow" />
+          <feMerge>
+            <feMergeNode in="glow" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+    </svg>
+    <script src="grave.js"></script>
+  </body>
+</html>

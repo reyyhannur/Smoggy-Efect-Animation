@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      :root {
+        --bodyBg: #000000;
+        --textSize: 10;
+      }
+
+      body {
+        background-color: var(--bodyBg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .smoke {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        filter: url("#filter");
+        display: flex;
+        flex-direction: column;
+        width: 200%;
+      }
+
+      .text:nth-child(1) {
+        background: linear-gradient(
+          #00f891,
+          #05e9e7,
+          #fac000,
+          #fe5700,
+          #ea1104,
+          #00d61c,
+          #021307
+        );
+        background-clip: text;
+        animation: neonAnimation 2s ease-in-out infinite;
+      }
+
+      .text {
+        filter: blur(0) contrast(120%);
+        font-size: calc(var(--textSize) * 1rem);
+        margin: auto;
+        animation: textAnimation 2s ease-in-out infinite;
+      }
+      @keyframes neonAnimation {
+        0%,
+        100% {
+          filter: url("#neon-effect");
+          transform: scale(1);
+        }
+        50% {
+          filter: none;
+          transform: scale(1.1);
+        }
+      }
+
+      @keyframes textAnimation {
+        0%,
+        100% {
+          opacity: 1;
+          transform: translateX(0) translateY(0);
+        }
+        50% {
+          opacity: 0.5;
+          transform: translateX(2px) translateY(-2px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="smoke">
+      <div class="text">
+        <img
+          src="icons8-javascript-logo.svg"
+          alt=""
+          style="filter: url(#neon-effect)"
+        />
+      </div>
+    </div>
+    <svg width="0">
+      <filter id="filter">
+        <feTurbulence
+          id="turbulence"
+          type="fractalNoise"
+          baseFrequency=".01"
+          numOctaves="20"
+        />
+        <feDisplacementMap in="SourceGraphic" scale="20" />
+      </filter>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+      <defs>
+        <filter id="neon-effect" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+          <feFlood flood-color="#ea1104" result="glowColor" />
+          <feComposite in="glowColor" in2="blur" operator="in" result="glow" />
+          <feMerge>
+            <feMergeNode in="glow" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+    </svg>
+    <script>
+      const filter = document.querySelector("#turbulence");
+      let frames = 1;
+      let rad = Math.PI / 180;
+      let bfx, bfy;
+
+      function freqAnimation() {
+        frames += 0.2;
+
+        bfx = 0.03;
+        bfy = 0.03;
+
+        bfx += 0.005 * Math.cos(frames * rad);
+        bfy += 0.005 * Math.sin(frames * rad);
+
+        bf = `${String(bfx)} ${String(bfy)}`;
+        filter.setAttributeNS(null, "baseFrequency", bf);
+
+        requestAnimationFrame(freqAnimation);
+      }
+
+      requestAnimationFrame(freqAnimation);
+
+      const root = document.documentElement;
+      const state = {
+        bodyBg: "#111",
+        textColor: "#f5f5f5",
+        textSize: 10,
+      };
+
+      function handleCssProp(value) {
+        state[this.property] = value;
+        root.style.setProperty(`--${this.property}`, String(value));
+      }
+
+      const gui = new lil.GUI({ title: "Smoke" });
+      gui.addColor(state, "bodyBg").onChange(handleCssProp);
+      gui.addColor(state, "textColor").onChange(handleCssProp);
+      gui.add(state, "textSize", 1, 20, 0.1).onChange(handleCssProp);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,69 @@
+:root {
+  --bodyBg: #000000;
+  --textSize: 10;
+}
+
+body {
+  background-color: var(--bodyBg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.smoke {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  filter: url("#filter");
+  display: flex;
+  flex-direction: column;
+  width: 200%;
+}
+
+.text:nth-child(1) {
+  background: linear-gradient(
+    #00f891,
+    #05e9e7,
+    #fac000,
+    #fe5700,
+    #ea1104,
+    #00d61c,
+    #021307
+  );
+  background-clip: text;
+  animation: neonAnimation 2s ease-in-out infinite;
+}
+
+.text {
+  filter: blur(0) contrast(120%);
+  font-size: calc(var(--textSize) * 1rem);
+  margin: auto;
+  animation: textAnimation 2s ease-in-out infinite;
+}
+@keyframes neonAnimation {
+  0%,
+  100% {
+    filter: url("#neon-effect");
+    transform: scale(1);
+  }
+  50% {
+    filter: none;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes textAnimation {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateX(2px) translateY(-2px);
+  }
+}
